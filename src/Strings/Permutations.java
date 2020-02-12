@@ -1,6 +1,7 @@
 package Strings;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Permutations {
 
@@ -21,25 +22,26 @@ public class Permutations {
             Character stringAChar = stringA.charAt(i);
             Character stringBChar = stringB.charAt(i);
 
-            Integer valueA = stringAHash.get(stringAChar);
-            Integer valueB = stringBHash.get(stringBChar);
-            if (valueA != null) {
-                stringAHash.put(stringAChar, 1 + valueA);
-            } else {
-                stringAHash.put(stringAChar, 1);
-            }
+            computeHash(stringAHash, stringAChar);
+            computeHash(stringBHash, stringBChar);
 
-            if (valueB != null) {
-                stringBHash.put(stringBChar, 1 + valueB);
-            } else {
-                stringBHash.put(stringBChar, 1);
+        }
+
+        for (Map.Entry<Character, Integer> entry: stringAHash.entrySet()) {
+            Character stringAKey = entry.getKey();
+            Integer stringAValue = entry.getValue();
+
+            Integer stringBValue = stringBHash.getOrDefault(stringAKey, 0);
+
+            if (!stringAValue.equals(stringBValue)) {
+                return false;
             }
         }
 
-        return false;
+        return true;
     }
 
-    private void computeHash(HashMap<Character, Integer> aHash, Character aChar) {
+    private static void computeHash(HashMap<Character, Integer> aHash, Character aChar) {
         Integer valueA = aHash.get(aChar);
         if (valueA != null) {
             aHash.put(aChar, 1 + valueA);
@@ -52,6 +54,6 @@ public class Permutations {
 
 class Testers {
     public static void main(String[] asasas) {
-        boolean test = Permutations.checkTwoStringsForPermutation("Cat", "Tac");
+        boolean test = Permutations.checkTwoStringsForPermutation("Tenet", "tneet");
     }
 }
